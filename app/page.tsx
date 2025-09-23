@@ -1,5 +1,5 @@
-import { ThemeSelector } from "@//components/theme-selector";
 import { PageLayout } from "@/components/page-layout";
+import { ThemeSelector } from "@/components/theme-selector";
 import Link from "next/link";
 
 export default function Home() {
