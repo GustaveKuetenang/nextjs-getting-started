@@ -67,7 +67,7 @@ export default async function Page() {
               </EditReviewName>
               {review.star && (
                 <ReviewStar
-                  setNewStar={setNewStar.bind(null, review.id)}
+                  onStarChange={setNewStar.bind(null, review.id)}
                   star={review.star}
                 />
               )}
