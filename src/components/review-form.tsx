@@ -39,15 +39,6 @@ export function ReviewForm() {
     },
   });
 
-  // const createReview = async (obj: { name: string; review: string }) => {
-  //   await fetch("/api/reviews", {
-  //     method: "POST",
-  //     body: JSON.stringify(obj),
-  //   }).then((res) => res.json());
-
-  //   router.refresh();
-  // };
-
   async function onSubmit(values: z.infer<typeof ReviewSchema>) {
     await executeAsync(values);
     router.refresh();

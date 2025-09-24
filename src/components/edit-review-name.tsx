@@ -69,7 +69,7 @@ export function EditReviewName(props: {
           setIsEditing(true);
           setTimeout(() => {
             ref.current?.select();
-          }, 100);
+          }, 1);
         }}
       >
         <Edit size={14} />

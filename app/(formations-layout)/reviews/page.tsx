@@ -1,31 +1,25 @@
-import { EditReviewName } from "@/components/edit-review-name";
-import ReviewStar from "@/components/review-star";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import prisma from "@/lib/prisma";
+  deleteReviewAction,
+  getReviewsSafeAction,
+  updateReviewAction,
+} from "@/actions/review.action";
+import { EditReviewName } from "@/components/edit-review-name";
+import { ReviewForm } from "@/components/review-form";
+import ReviewStar from "@/components/review-star";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Trash2 } from "lucide-react";
 import { revalidatePath } from "next/cache";
-import { Suspense } from "react";
 
-export default async function Page() {
-  const reviews = await prisma.review.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+export default async function Home() {
+  const reviews = await getReviewsSafeAction();
 
-  const setNewStar = async (reviewId: string, star: number) => {
+  const changeStar = async (reviewId: string, star: number) => {
     "use server";
 
-    // TODO: Remove in production and une react-query
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    await prisma.review.update({
-      where: { id: reviewId },
-      data: { star },
+    await updateReviewAction({
+      reviewId,
+      star,
     });
 
     revalidatePath("/reviews");
@@ -34,30 +28,35 @@ export default async function Page() {
   const setReviewName = async (reviewId: string, name: string) => {
     "use server";
 
-    if (name.trim() === "") {
-      revalidatePath("/reviews");
-      return;
-    }
-
-    // TODO: Remove in production and une react-query
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    await prisma.review.update({
-      where: { id: reviewId },
-      data: { name },
+    await updateReviewAction({
+      reviewId,
+      name,
     });
 
     revalidatePath("/reviews");
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Reviews</CardTitle>
-      </CardHeader>
-      <CardContent>
-        {reviews.map((review) => (
-          <Card key={review.id} className="mb-4">
+    <>
+      <div>
+        {reviews.data?.map((review) => (
+          <Card key={review.id} className="mb-4 group relative">
+            <div className="absolute right-4 top-4">
+              <form>
+                <Button
+                  variant={"ghost"}
+                  size={"icon"}
+                  className="opacity-0 group-hover:opacity-100 cursor-pointer"
+                  formAction={async () => {
+                    "use server";
+                    await deleteReviewAction({ reviewId: review.id });
+                    revalidatePath("/");
+                  }}
+                >
+                  <Trash2 />
+                </Button>
+              </form>
+            </div>
             <CardHeader>
               <EditReviewName
                 className="text-lg font-bold"
@@ -67,7 +66,7 @@ export default async function Page() {
               </EditReviewName>
               {review.star && (
                 <ReviewStar
-                  onStarChange={setNewStar.bind(null, review.id)}
+                  onStarChange={changeStar.bind(null, review.id)}
                   star={review.star}
                 />
               )}
@@ -77,21 +76,12 @@ export default async function Page() {
             </CardContent>
           </Card>
         ))}
-      </CardContent>
-
-      <CardFooter>
-        <Suspense fallback={<Skeleton className="h-10 w-full" />}>
-          <LongLoadingCOmponent />
-        </Suspense>
-      </CardFooter>
-    </Card>
+      </div>
+      <Card>
+        <CardContent>
+          <ReviewForm />
+        </CardContent>
+      </Card>
+    </>
   );
 }
-
-const LongLoadingCOmponent = async () => {
-  const reviews = await prisma.review.count();
-
-  await new Promise((resolve) => setTimeout(resolve, 4000));
-
-  return <div>There are {reviews} reviews</div>;
-};
