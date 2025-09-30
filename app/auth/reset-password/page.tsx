@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { buttonVariants } from "@/components/ui/button";
@@ -10,13 +10,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
 import { ResetPasswordForm } from "./reset-password-form";
 
-export default function ResetPasswordPage() {
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
-  const router = useRouter();
+export const dynamic = "force-dynamic";
+
+export default async function ResetPasswordPage(props: {
+  searchParams: Promise<Record<string, string>>;
+}) {
+  const searchParams = await props.searchParams;
+
+  const { token } = searchParams;
 
   if (!token) {
     return (

@@ -2,6 +2,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function VerifyPage(props: {
   searchParams: Promise<Record<string, string>>;
 }) {
@@ -20,7 +22,7 @@ export default async function VerifyPage(props: {
       </Alert>
       <div>
         <Link href="/auth/forget-password" className={buttonVariants({})}>
-          Didn't receive the link
+          {"Didn't receive the link? Resend "}
         </Link>
       </div>
     </div>

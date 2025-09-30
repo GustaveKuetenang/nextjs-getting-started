@@ -33,7 +33,7 @@ export function ReviewForm() {
     },
   });
 
-  const { executeAsync, hasErrored, result } = useAction(addReviewSafeAction, {
+  const { executeAsync } = useAction(addReviewSafeAction, {
     onSuccess: () => {
       toast.success("Review created !");
     },
