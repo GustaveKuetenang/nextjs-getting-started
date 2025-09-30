@@ -42,7 +42,7 @@ export function ResetPasswordForm(props: { token: string }) {
         },
         {
           onSuccess: () => {
-            router.push(`/auth/signin`);
+            router.replace(`/auth/signin`);
             toast.success("Password reset, please sign in");
           },
           onError: (error) => {
