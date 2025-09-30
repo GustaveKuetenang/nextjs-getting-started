@@ -10,14 +10,12 @@ import {
 import Link from "next/link";
 import { ResetPasswordForm } from "./reset-password-form";
 
-// export const dynamic = "force-dynamic";
+type Props = {
+  searchParams?: Promise<{ [key: string]: string | undefined }>;
+};
 
-export default async function ResetPasswordPage(props: {
-  searchParams: Promise<Record<string, string>>;
-}) {
-  const searchParams = await props.searchParams;
-
-  const { token } = searchParams;
+export default async function ResetPasswordPage({ searchParams }: Props) {
+  const token = (await searchParams)?.token;
 
   if (!token) {
     return (

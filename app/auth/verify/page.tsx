@@ -2,13 +2,12 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 
-// export const dynamic = "force-dynamic";
+type Props = {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
-export default async function VerifyPage(props: {
-  searchParams: Promise<Record<string, string>>;
-}) {
-  const searchParams = await props.searchParams;
-  const { email } = searchParams;
+export default async function VerifyPage({ searchParams }: Props) {
+  const email = (await searchParams)?.email;
 
   return (
     <div className="space-y-6">
