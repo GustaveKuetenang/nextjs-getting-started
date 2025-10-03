@@ -12,3 +12,12 @@ export const UpdateReviewSchema = z.object({
 	reviewId: z.string(),
 	star: z.number().optional(),
 });
+
+
+export type ReviewDTO = z.infer<typeof ReviewSchema> & {
+	id: string;
+	createdAt: Date;
+	updatedAt: Date;
+	userId: string;
+	star: number | null;
+};
