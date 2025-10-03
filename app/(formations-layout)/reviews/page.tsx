@@ -8,7 +8,7 @@ import { ReviewForm } from "@/components/review-form";
 import ReviewStar from "@/components/review-star";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Review } from "@prisma/client";
+import type { Review } from "@prisma/client";
 import { Trash2 } from "lucide-react";
 import { revalidatePath } from "next/cache";
 
