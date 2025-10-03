@@ -6,6 +6,7 @@ import { actionUser } from "@/lib/safe-action-client";
 import z from "zod";
 
 export const getReviewsSafeAction = actionUser
+	.outputSchema(z.array(ReviewSchema))
 	.action(async ({ }) => {
 		const reviews = await prisma.review.findMany({
 			orderBy: { createdAt: "desc" },

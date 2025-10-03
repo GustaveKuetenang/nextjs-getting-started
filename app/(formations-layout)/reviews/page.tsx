@@ -8,7 +8,6 @@ import { ReviewForm } from "@/components/review-form";
 import ReviewStar from "@/components/review-star";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import type { Review } from "@prisma/client";
 import { Trash2 } from "lucide-react";
 import { revalidatePath } from "next/cache";
 
@@ -40,7 +39,7 @@ export default async function Home() {
   return (
     <>
       <div>
-        {reviews.data?.map((review: Review) => (
+        {reviews.data?.map((review) => (
           <Card key={review.id} className="mb-4 group relative">
             <div className="absolute right-4 top-4">
               <form>
